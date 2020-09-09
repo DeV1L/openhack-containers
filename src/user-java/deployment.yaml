@@ -1,0 +1,53 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: user-java
+spec:
+  selector:
+    matchLabels:
+      app: user-java
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: user-java
+    spec:
+      containers:
+      - name: user-java
+        image: registrythx0954.azurecr.io/tripinsights/user-java
+        ports:
+        - containerPort: 80
+        env:
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: sqlsecret
+              key: SQL_USER
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sqlsecret
+              key: SQL_PASSWORD
+        - name: SQL_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: sqlsecret
+              key: SQL_SERVER
+        - name: SQL_DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: sqlsecret
+              key: SQL_DBNAME
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: user-java
+spec:
+  type: ClusterIP
+  selector:
+    app: user-java
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
