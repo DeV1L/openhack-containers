@@ -23,5 +23,16 @@ spec:
             value: "http://userprofile.default.svc.cluster.local"
           - name: TRIPS_API_ENDPOINT
             value: "http://trips.default.svc.cluster.local"
-
-
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: tripviewer
+spec:
+  type: LoadBalancer
+  selector:
+    app: tripviewer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
