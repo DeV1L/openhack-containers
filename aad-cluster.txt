@@ -10,3 +10,13 @@ az aks create `
 	--dns-service-ip 10.23.0.2 `
 	--service-cidr 10.23.0.0/24 `
 	--generate-ssh-keys
+
+kubectl apply -f deployment.yaml
+az aks update -n team1cluster -g team1resource --attach-acr registrythx0954.azurecr.io
+
+-- cluster 1
+kubectl get secret sqlsecret -o=yaml > 1.yaml
+-- cluster 2
+kubectl apply -f 1.yaml
+
+kubectl exec poi-f8cb89fb4-rlhlm -it -- sh
