@@ -1,0 +1,27 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: team1-sqlsecrets
+spec:
+  provider: azure
+  parameters:
+    keyvaultName: "team1-keyvault"
+    objects:  |
+      array:
+        - |
+          objectName: SQL-USER
+          objectAlias: SQL_USER
+          objectType: secret
+        - |
+          objectName: SQL-PASSWORD
+          objectAlias: SQL_PASSWORD
+          objectType: secret
+        - |
+          objectName: SQL-SERVER
+          objectAlias: SQL_SERVER
+          objectType: secret
+        - |
+          objectName: SQL-DBNAME
+          objectAlias: SQL_DBNAME
+          objectType: secret
+    tenantId: "344e7f82-8a2a-43b6-a80c-5f8be21e370c"

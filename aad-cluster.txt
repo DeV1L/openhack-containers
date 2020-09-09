@@ -20,3 +20,5 @@ kubectl get secret sqlsecret -o=yaml > 1.yaml
 kubectl apply -f 1.yaml
 
 kubectl exec poi-f8cb89fb4-rlhlm -it -- sh
+
+az keyvault create --location westeurope --name team1-keyvault --resource-group team1-kv-resource
