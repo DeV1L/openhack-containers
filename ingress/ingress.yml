@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: openhack-team1
+
+spec:
+  rules:
+  - host: openhack-team1.westeurope.cloudapp.azure.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tripviewer
+          servicePort: 80
+  - host: openhack-team1.westeurope.cloudapp.azure.com
+    http:
+      paths:
+      - path: /api/user-java
+        backend:
+          serviceName: user-java
+          servicePort: 80
+  - host: openhack-team1.westeurope.cloudapp.azure.com
+    http:
+      paths:
+      - path: /api/user
+        backend:
+          serviceName: userprofile
+          servicePort: 80
+  - host: openhack-team1.westeurope.cloudapp.azure.com
+    http:
+      paths:
+      - path: /api/trips
+        backend:
+          serviceName: trips
+          servicePort: 80
+  - host: openhack-team1.westeurope.cloudapp.azure.com
+    http:
+      paths:
+      - path: /api/poi
+        backend:
+          serviceName: poi
+          servicePort: 80

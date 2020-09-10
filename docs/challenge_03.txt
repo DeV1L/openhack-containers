@@ -1,0 +1,68 @@
+# https://openhacks.azurewebsites.net/labs/player/microsoft-open-hack-containers-v2_2d85a605ca87_3_0#labGuide
+
+# AD
+# https://docs.microsoft.com/en-us/azure/aks/managed-aad
+
+# List existing groups in the directory
+az ad group list --filter "displayname eq '<group-name>'" -o table
+
+# Create an Azure AD group
+az ad group create --display-name admingroup --mail-nickname admingroup
+
+az ad group show --group admingroup
+{
+  "deletionTimestamp": null,
+  "description": null,
+  "dirSyncEnabled": null,
+  "displayName": "adminGroup",
+  "lastDirSyncTime": null,
+  "mail": null,
+  "mailEnabled": false,
+  "mailNickname": "adminGroup",
+  "objectId": "c5abb308-f981-48f8-9431-155ac8cd741f",
+  "objectType": "Group",
+  "odata.metadata": "https://graph.windows.net/344e7f82-8a2a-43b6-a80c-5f8be21e370c/$metadata#directoryObjects/@Element",
+  "odata.type": "Microsoft.DirectoryServices.Group",
+  "onPremisesDomainName": null,
+  "onPremisesNetBiosName": null,
+  "onPremisesSamAccountName": null,
+  "onPremisesSecurityIdentifier": null,
+  "provisioningErrors": [],
+  "proxyAddresses": [],
+  "securityEnabled": true
+}
+
+# Create an Azure resource group
+az group create --name team1Resource --location westeurope
+
+# Create subnet
+az network vnet subnet create -g teamResources --vnet-name vnet -n team1subnet --addressPrefix 10.2.1.0/24
+
+
+# Create an AKS-managed Azure AD cluster
+az aks create -g myResourceGroup -n myManagedCluster --enable-aad --aad-admin-group-object-ids c5abb308-f981-48f8-9431-155ac8cd741f --network-plugin azure --vnet-subnet-id <> --dns-service-ip 10.23.0.2 --service-cidr 10.23.0.0/24 --generate-ssh-key
+
+# Check access
+az aks get-credentials --name team1cluster --resource-group team1resource
+
+az aks get-credentials --name team1cluster --resource-group team1resource --admin
+
+# Setup roles
+kubectl get clusterrole
+kubectl get clusterrolebindings
+
+
+kubectl get clusterroles view
+kubectl describe clusterroles view
+
+kubectl apply -f .\basic-azure-ad-binding.yaml
+kubectl get clusterrolebindings view -o yaml
+
+az aks get-credentials --name team1cluster --resource-group team1resource
+
+
+
+
+
+
+
